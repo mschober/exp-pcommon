@@ -6,9 +6,17 @@ import fileutil
 class p4:
     def __init__(self, path):
         self.path = path
+        self.dirs_list = []
+
+    def __execute_p4_command(self, cmd):
+        results = subprocess.check_output(cmd.split()).split('\n')
+        results.pop()
+        return results
 
     def dirs(self):
-        return self.path
+        if not self.dirs_list:
+            self.dirs_list = self.__execute_p4_command("p4 dirs %s" % self.path)
+        return list(self.dirs_list)
 
 class P4Tools:
 
