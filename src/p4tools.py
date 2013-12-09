@@ -2,10 +2,19 @@
 import subprocess
 import fileutil
 
+
+class p4:
+    def __init__(self, path):
+        self.path = path
+
+    def dirs(self):
+        return self.path
+
 class P4Tools:
 
     def __init__(self, p4_path):
         self.p4_path = p4_path
+        self.p4 = p4()
 
     def __remove_change_information(self, changes):
         return [ change.split('#')[0] for change in changes ]
@@ -27,7 +36,9 @@ class P4Tools:
         return dirs
 
     def files_from_sub_dir(self, p4_path):
-        return self.traverse_files(p4_path + "/*")
+        files = self.traverse_files(p4_path + "/*")
+        for file in files:
+            print "\n".join(self.__execute_p4_command('p4 print %s' % file))
 
     def to_map(self):
         paths = self.traverse_files()
