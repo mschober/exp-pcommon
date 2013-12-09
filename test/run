@@ -1,0 +1,4 @@
+#!/usr/bin/env python
+import src.p4tools as p4tools
+tools = p4tools.P4Tools('//depot/EDW/SQLServer/LZ')
+

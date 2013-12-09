@@ -24,6 +24,11 @@ class p4:
         self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
+    def text(self, sub_path=''):
+        cmd = 'p4 print %s' % ('/'.join([ path for path in [self.path, sub_path, '*'] if path ]))
+        self.files_txt = self.__execute_p4_command(cmd)
+        return list(self.files_txt)
+
 class P4Tools:
 
     def __init__(self, p4_path):
@@ -39,20 +44,20 @@ class P4Tools:
         return results
 
     def traverse_files(self, sub_path=''):
-        cmd = "p4 files %s" % (self.p4_path + "/" + sub_path + "/...")
-        changes = self.__execute_p4_command(cmd)
+        changes = self.p4.files(sub_path)
         paths = self.__remove_change_information(changes)
         return paths
 
     def traverse_top_level_dirs(self):
-        cmd = "p4 dirs %s" % (self.p4_path + "/*")
-        dirs = self.__execute_p4_command(cmd)
+        dirs = self.p4.dirs()
         return dirs
 
-    def files_from_sub_dir(self, p4_path):
-        files = self.traverse_files(p4_path + "/*")
-        for file in files:
-            print "\n".join(self.__execute_p4_command('p4 print %s' % file))
+    def files_from_sub_dir(self, *args):
+        file_paths = self.traverse_files('*/' + args[0])
+        files = []
+        for file in file_paths[0:10]:
+            files.append("\n".join(self.__execute_p4_command('p4 print %s' % file)))
+        return files
 
     def to_map(self):
         paths = self.traverse_files()
