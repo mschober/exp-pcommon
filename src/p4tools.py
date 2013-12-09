@@ -7,6 +7,7 @@ class p4:
     def __init__(self, path):
         self.path = path
         self.dirs_list = []
+        self.files_list = []
 
     def __execute_p4_command(self, cmd):
         results = subprocess.check_output(cmd.split()).split('\n')
@@ -17,6 +18,11 @@ class p4:
         if not self.dirs_list:
             self.dirs_list = self.__execute_p4_command("p4 dirs %s" % self.path)
         return list(self.dirs_list)
+
+    def files(self):
+        if not self.files_list:
+            self.files_list = self.__execute_p4_command("p4 files %s" % self.path)
+        return list(self.files_list)
 
 class P4Tools:
 
