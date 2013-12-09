@@ -14,8 +14,8 @@ class p4:
         results.pop()
         return results
 
-    def dirs(self):
-        cmd = "p4 dirs %s" % (self.path + "/*")
+    def dirs(self, sub_path=''):
+        cmd = "p4 dirs %s" % ('/'.join([ path for path in [self.path, sub_path, '*'] if path ]))
         self.dirs_list = self.__execute_p4_command(cmd)
         return list(self.dirs_list)
 
