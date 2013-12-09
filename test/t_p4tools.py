@@ -8,12 +8,19 @@ class Testp4(unittest.TestCase):
 
     @istest
     def dirs_cmd_happy_path(self):
-        path = '//depot/dmo/*'
+        path = '//depot/dmo'
         p4 = p4tools.p4(path)
-        self.assertEquals('', p4.dirs()[0].split(path[:-2])[0])
+        self.assertEquals(path.split('/'), p4.dirs()[0].split('/')[0:-1])
 
     @istest
     def files_cmd_happy_path(self):
-        path = '//depot/dmo/BookingImp/BookingImp/DEV/db/tbl/index/...'
+        path = '//depot/dmo/BookingImp/BookingImp/DEV/db/tbl/index'
         p4 = p4tools.p4(path)
-        self.assertEquals('', p4.files()[0].split(path[:-4])[0])
+        print path
+        self.assertEquals(path.split('/'), p4.files()[0].split('/')[0:-1])
+
+    @istest
+    def files_cmd_with_sub_path(self):
+        path = '//depot/dmo/BookingImp/BookingImp/DEV/db/tbl'
+        p4 = p4tools.p4(path)
+        self.assertEquals(path.split('/') + ['index'], p4.files('index')[0].split('/')[0:-1])

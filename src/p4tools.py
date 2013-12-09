@@ -15,20 +15,20 @@ class p4:
         return results
 
     def dirs(self):
-        if not self.dirs_list:
-            self.dirs_list = self.__execute_p4_command("p4 dirs %s" % self.path)
+        cmd = "p4 dirs %s" % (self.path + "/*")
+        self.dirs_list = self.__execute_p4_command(cmd)
         return list(self.dirs_list)
 
-    def files(self):
-        if not self.files_list:
-            self.files_list = self.__execute_p4_command("p4 files %s" % self.path)
+    def files(self, sub_path=''):
+        cmd = "p4 files %s" % ('/'.join([ path for path in [self.path, sub_path, '...'] if path ]))
+        self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
 class P4Tools:
 
     def __init__(self, p4_path):
         self.p4_path = p4_path
-        self.p4 = p4()
+        self.p4 = p4(p4_path)
 
     def __remove_change_information(self, changes):
         return [ change.split('#')[0] for change in changes ]
@@ -38,8 +38,8 @@ class P4Tools:
         results.pop()
         return results
 
-    def traverse_files(self, sub_path=None):
-        cmd = "p4 files %s" % (self.p4_path + "/..." + sub_path)
+    def traverse_files(self, sub_path=''):
+        cmd = "p4 files %s" % (self.p4_path + "/" + sub_path + "/...")
         changes = self.__execute_p4_command(cmd)
         paths = self.__remove_change_information(changes)
         return paths
