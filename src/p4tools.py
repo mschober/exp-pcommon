@@ -66,4 +66,3 @@ class P4Tools:
         keys = '_'.join(fileutil.path_heads(sub_paths))
         path_file = dict(zip(files, keys))
         return path_file
-

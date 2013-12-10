@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import pprint
-import src.util.utilities as utilities
-import src.file.fileutil as fileutil
-from src.p4.p4tools import P4Tools
+import utilities as utilities
+import fileutil as fileutil
+from p4tools import P4Tools
 
 #maybe classes would help clean this up
 class P4FileCompare:
@@ -58,5 +58,5 @@ def find_matching_files(lowercase=False):
         #results.append(compare(path))
     #pprint.pprint(results)
 
-
-find_matching_files()
+def names(files):
+    return [ the_file.split('/')[-1] for the_file in files ]
