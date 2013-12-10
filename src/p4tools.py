@@ -53,12 +53,11 @@ class P4Tools:
         return dirs
 
     def files_from_sub_dir(self, *args):
-        file_paths = self.traverse_files('*/' + args[0])
-        file_name = fileutil.path_tails(file_paths)
-        file_lst = map(self.__execute_p4_command, [ 'p4 print %s' % fpath for fpath in file_paths ])
-        files = dict(zip(file_name, file_lst))
-        #for file in file_paths[0:10]:
-        #    files.append("\n".join(self.__execute_p4_command('p4 print %s' % file)))
+        file_path = self.traverse_files('*/' + args[0])
+        file_name = fileutil.path_tails(file_path)
+        file_lst = map(self.__execute_p4_command, [ 'p4 print %s' % fpath for fpath in file_path ])
+        a_file = zip(file_path, file_lst)
+        files = dict(zip(file_name, a_file))
         return files
 
     def to_map(self):
