@@ -54,9 +54,11 @@ class P4Tools:
 
     def files_from_sub_dir(self, *args):
         file_paths = self.traverse_files('*/' + args[0])
-        files = []
-        for file in file_paths[0:10]:
-            files.append("\n".join(self.__execute_p4_command('p4 print %s' % file)))
+        file_name = fileutil.path_tails(file_paths)
+        file_lst = map(self.__execute_p4_command, [ 'p4 print %s' % fpath for fpath in file_paths ])
+        files = dict(zip(file_name, file_lst))
+        #for file in file_paths[0:10]:
+        #    files.append("\n".join(self.__execute_p4_command('p4 print %s' % file)))
         return files
 
     def to_map(self):
@@ -64,5 +66,5 @@ class P4Tools:
         sub_paths = [ path.replace(self.p4_path + "/", '') for path in paths ]
         files = fileutil.path_tails(sub_paths)
         keys = '_'.join(fileutil.path_heads(sub_paths))
-        path_file = dict(zip(files, keys))
+        path_file = dict(zip(files, keys)) #this looks backwards because it is, the files are now the keys and the keys are the values
         return path_file

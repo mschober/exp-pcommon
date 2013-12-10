@@ -57,6 +57,3 @@ def find_matching_files(lowercase=False):
         pprint.pprint(compare(path, lower=lowercase))
         #results.append(compare(path))
     #pprint.pprint(results)
-
-def names(files):
-    return [ the_file.split('/')[-1] for the_file in files ]
