@@ -18,3 +18,12 @@ def find_duplicates(files, lower=False):
     if lower:
         files = utilities.lowercase(files)
     return [ key for key, val in collections.Counter( files ).iteritems() if val > 1 ]
+
+class ListFile:
+
+    def __init__(self, file_lines):
+        self.file_lines = file_lines
+
+    def file_break(self, width):
+        file_separator_string = (width/2 * '=' + '[ FILE BREAK ]' + width/2 * '=')
+        return file_separator_string.join(map("\n".join, self.file_lines))
