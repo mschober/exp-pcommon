@@ -23,7 +23,8 @@ Change History:
     @istest
     def my_example(self):
         doc = perforce_header.Document('line1\nline2\nline3')
-        doc.replace_header(self.p4_header, '1', file_name='my_file.sql', current_date='2013-12-10')
+        header_args = {'file_name':'my_file.sql', 'current_date':'2013-12-10'}
+        doc.replace_header(self.p4_header, '1', **header_args)
         has_file = False
         has_date = False
         for line in doc.lst():
