@@ -23,6 +23,11 @@ class Document:
     def p4_path(self):
         return self.path
 
+    def remove_root(self, root):
+        fname = fileutil.path_tail(self.path)
+        self.path = self.path.replace(root + '/', '')
+        self.path = self.path.replace('/' + fname, '')
+
     def __replace_header(self, new_header, split_string, upper=False, **kwargs):
         rebuilt_file = []
 
