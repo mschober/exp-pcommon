@@ -3,8 +3,9 @@ import common.src.fileutil as fileutil
 
 class Document:
 
-    def __init__(self, text):
+    def __init__(self, p4_path, text):
         #self.text = text.format(**kwargs)
+        self.p4_path = p4_path
         self.text = text
         self.no_match = []
 
@@ -16,6 +17,9 @@ class Document:
 
     def lst(self):
         return self.__blocks('\n')
+
+    def file_name(self):
+        return fileutil.path_tail(self.p4_path)
 
     def __replace_header(self, new_header, split_string, upper=False, **kwargs):
         rebuilt_file = []
