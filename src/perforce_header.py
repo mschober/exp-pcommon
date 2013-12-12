@@ -11,8 +11,8 @@ class Document:
     def __str__(self):
         return self.text
 
-    def __blocks(self, split_string):
-        return self.text.split(split_string)
+    def __blocks(self, split_line):
+        return self.text.split(split_line)
 
     def lst(self):
         return self.__blocks('\n')
@@ -28,21 +28,21 @@ class Document:
         self.path = self.path.replace(root + '/', '')
         self.path = self.path.replace('/' + fname, '')
 
-    def __replace_header(self, new_header, split_string, upper=False, **kwargs):
+    def __replace_header(self, new_header, split_line, upper=False, **kwargs):
         rebuilt_file = []
 
         if upper:
-            split_string = str.upper(split_string)
+            split_line = str.upper(split_line)
 
-        if split_string in self.lst():
-            blocks = self.__blocks(split_string)
+        if split_line in self.lst():
+            blocks = self.__blocks(split_line)
 
             header_string = blocks[0]
             body_lst = ''.join(blocks[1:]).split('\n')
 
             header_string = new_header.format(**kwargs)
             header_lst = header_string.split('\n')
-            header_lst.append(split_string)
+            header_lst.append(split_line)
 
             rebuilt_file.extend(header_lst)
             rebuilt_file.extend(body_lst)
@@ -51,6 +51,6 @@ class Document:
             self.no_match.append(self.text)
 
 
-    def replace_header(self, new_header, split_string, **kwargs):
-        self.__replace_header(new_header, split_string, **kwargs)
-        self.__replace_header(new_header, split_string, upper=True, **kwargs)
+    def replace_header(self, new_header, split_line, **kwargs):
+        self.__replace_header(new_header, split_line, **kwargs)
+        self.__replace_header(new_header, split_line, upper=True, **kwargs)

@@ -21,8 +21,8 @@ Change History:
 ******************************************************************************/'''
 
     @istest
-    def my_example(self):
-        doc = perforce_header.Document('line1\nline2\nline3')
+    def replace_header(self):
+        doc = perforce_header.Document('path', 'line\n1\nline2\nline3')
         header_args = {'file_name':'my_file.sql', 'current_date':'2013-12-10'}
         doc.replace_header(self.p4_header, '1', **header_args)
         has_file = False
@@ -30,12 +30,11 @@ Change History:
         for line in doc.lst():
             if re.search('my_file.sql', line):
                 has_file = True
-        for line in doc.lst():
             if re.search('2013', line):
                 has_date = True
         assert has_file and has_date
 
     @istest
     def new_document(self):
-        doc = perforce_header.Document('line1\nline2\nline3')
+        doc = perforce_header.Document('path', 'line1\nline2\nline3')
         self.assertEquals(['line1', 'line2', 'line3'], doc.lst())

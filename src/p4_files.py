@@ -5,6 +5,11 @@ import fileutil as fileutil
 from p4tools import P4Tools
 
 #maybe classes would help clean this up
+class P4File:
+    def __init__(self, p4_path, file_lst):
+        self.p4_path = p4_path
+        self.file_lst = file_lst
+
 class P4FileCompare:
     def __init__(self, path1, path2):
         self.p4_compare_paths = [ P4Tools(path1), P4Tools(path2) ]
