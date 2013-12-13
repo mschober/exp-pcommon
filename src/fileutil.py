@@ -19,6 +19,12 @@ def find_duplicates(files, lower=False):
         files = utilities.lowercase(files)
     return [ key for key, val in collections.Counter( files ).iteritems() if val > 1 ]
 
+def blocks(file_string, split_line='\n'):
+    return file_string.split(split_line)
+
+def whole(file_lst, join_string='\n'):
+    return join_string.join(file_lst)
+
 class ListFile:
 
     def __init__(self, file_lines):
