@@ -33,22 +33,19 @@ class Document:
         rebuilt_file = []
 
         if not split_line:
-            pass
-            #insert_header(new_header, **kwargs)
-
-        if upper:
-            split_line = str.upper(split_line)
-
-        if split_line in self.__lst():
+            header_string = new_header.format(**kwargs)
+            body_string = self.text
+            self.text = fileutil.whole([header_string, body_string])
+        elif split_line in self.__lst():
+            split_line if not upper else split_line.upper()
             blocks = fileutil.blocks(self.text, split_line)
             header_string = new_header.format(**kwargs)
             body_string = fileutil.whole(blocks[1:])
             self.text = fileutil.whole([header_string, split_line, body_string])
-            return False
         else:
-            return True
+            self.no_match = (self.path, self.text)
 
-    def replace_header(self, new_header, split_line, **kwargs):
+    def replace_header(self, new_header, split_line=None, **kwargs):
         missing = self.__replace_header(new_header, split_line, **kwargs)
         missing = missing and self.__replace_header(new_header, split_line, upper=True, **kwargs)
         if missing:
