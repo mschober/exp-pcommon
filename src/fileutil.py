@@ -25,8 +25,12 @@ def blocks(file_string, split_line='\n'):
 def whole(file_lst, join_string='\n'):
     return join_string.join(file_lst)
 
-def lower_line(text, line):
-    return text
+def lower_line(file_lst, line):
+    upper_line = line.upper()
+    if not upper_line in file_lst:
+        raise ValueError("couldn't find %s in %s" % (file_lst, line))
+    text = whole(file_lst).replace(upper_line, line)
+    return blocks(text)
 
 class ListFile:
 
