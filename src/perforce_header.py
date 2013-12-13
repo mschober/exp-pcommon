@@ -15,7 +15,7 @@ class Document:
     def __blocks(self, split_line):
         return self.text.split(split_line)
 
-    def lst(self):
+    def __lst(self):
         return fileutil.blocks(self.text)
 
     def file_name(self):
@@ -32,16 +32,6 @@ class Document:
     def __replace_header(self, new_header, split_line=None, upper=False, **kwargs):
         rebuilt_file = []
 
-        def insert_header(new_header, **kwargs):
-            header_string = new_header.format(**kwargs)
-            header_lst = header_string.split('\n')
-            header_lst.append(split_line)
-
-            rebuilt_file.extend(header_lst)
-            rebuilt_file.extend(body_lst)
-            self.text = "\n".join(rebuilt_file)
-
-
         if not split_line:
             pass
             #insert_header(new_header, **kwargs)
@@ -49,20 +39,14 @@ class Document:
         if upper:
             split_line = str.upper(split_line)
 
-        if split_line in self.lst():
+        if split_line in self.__lst():
             blocks = fileutil.blocks(self.text, split_line)
-
-            if len(blocks[0]) < 3 and re.search(r'/' + 5 * '\*', blocks[1]):
-                print 'split wrong, blocks (%s) path (%s)' % (blocks[0], self.path)
-
-            header_string = blocks[0]
-            body_lst = ''.join(blocks[1:]).split('\n')
-
-            insert_header(new_header, **kwargs)
+            header_string = new_header.format(**kwargs)
+            body_string = fileutil.whole(blocks[1:])
+            self.text = fileutil.whole([header_string, split_line, body_string])
             return False
         else:
             return True
-
 
     def replace_header(self, new_header, split_line, **kwargs):
         missing = self.__replace_header(new_header, split_line, **kwargs)
