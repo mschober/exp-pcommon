@@ -34,14 +34,14 @@ class Document:
         if not split_line:
             header_string = new_header.format(**kwargs)
             body_string = self.text
-            self.text = fileutil.whole([header_string, body_string])
+            self.text = fileutil.whole([header_string, 'set nocount on', body_string])
         elif re.search(split_line, self.text):
             split_line = split_line.replace('\*', '*')
             split_line if not upper else split_line.upper()
             blocks = fileutil.blocks(self.text, split_line)
             header_string = new_header.format(**kwargs)
             body_string = fileutil.whole(blocks[1:])
-            self.text = fileutil.whole([header_string, split_line, body_string])
+            self.text = fileutil.whole([header_string, 'set nocount on', body_string])
         else:
             self.no_match = (self.path, self.text)
 
