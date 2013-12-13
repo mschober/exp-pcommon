@@ -25,6 +25,9 @@ def blocks(file_string, split_line='\n'):
 def whole(file_lst, join_string='\n'):
     return join_string.join(file_lst)
 
+def lower_line(text, line):
+    return text
+
 class ListFile:
 
     def __init__(self, file_lines):

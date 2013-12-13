@@ -30,13 +30,13 @@ class Document:
         return self.no_match
 
     def __replace_header(self, new_header, split_line=None, upper=False, **kwargs):
-        rebuilt_file = []
 
         if not split_line:
             header_string = new_header.format(**kwargs)
             body_string = self.text
             self.text = fileutil.whole([header_string, body_string])
-        elif split_line in self.__lst():
+        elif re.search(split_line, self.text):
+            split_line = split_line.replace('\*', '*')
             split_line if not upper else split_line.upper()
             blocks = fileutil.blocks(self.text, split_line)
             header_string = new_header.format(**kwargs)

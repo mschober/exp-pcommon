@@ -3,6 +3,7 @@
 import unittest
 from nose.tools import istest
 import src.perforce_header as perforce_header
+import src.fileutil as fileutil
 import re
 
 class TestDocument(unittest.TestCase):
@@ -27,7 +28,7 @@ Change History:
         doc.replace_header(self.p4_header, '1', **header_args)
         has_file = False
         has_date = False
-        for line in doc.lst():
+        for line in fileutil.blocks(str(doc)):
             if re.search('my_file.sql', line):
                 has_file = True
             if re.search('2013', line):
@@ -37,4 +38,4 @@ Change History:
     @istest
     def new_document(self):
         doc = perforce_header.Document('path', 'line1\nline2\nline3')
-        self.assertEquals(['line1', 'line2', 'line3'], doc.lst())
+        self.assertEquals(['line1', 'line2', 'line3'], fileutil.blocks(str(doc)))
