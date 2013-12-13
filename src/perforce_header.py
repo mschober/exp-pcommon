@@ -16,7 +16,7 @@ class Document:
         return self.text.split(split_line)
 
     def lst(self):
-        return self.__blocks('\n')
+        return fileutil.blocks(self.text)
 
     def file_name(self):
         return fileutil.path_tail(self.path)
@@ -50,7 +50,7 @@ class Document:
             split_line = str.upper(split_line)
 
         if split_line in self.lst():
-            blocks = self.__blocks(split_line)
+            blocks = fileutil.blocks(self.text, split_line)
 
             if len(blocks[0]) < 3 and re.search(r'/' + 5 * '\*', blocks[1]):
                 print 'split wrong, blocks (%s) path (%s)' % (blocks[0], self.path)
