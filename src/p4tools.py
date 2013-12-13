@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import subprocess
 import fileutil
-
+import common.src.utilities as utilities
+import re
 
 class p4:
     def __init__(self, path):
@@ -10,8 +11,7 @@ class p4:
         self.files_list = []
 
     def __execute_p4_command(self, cmd):
-        results = subprocess.check_output(cmd.split()).split('\n')
-        results.pop()
+        results = [ file for file in utilities.execute_command(cmd) if not re.search(' - delete change', file) ]
         return results
 
     def dirs(self, sub_path=''):
@@ -20,7 +20,7 @@ class p4:
         return list(self.dirs_list)
 
     def files(self, sub_path=''):
-        cmd = "p4 files %s" % ('/'.join([ path for path in [self.path, sub_path, '...'] if path ]))
+        cmd = "p4 files %s" % ('/'.join([ path for path in [self.path, sub_path, '...#head'] if path ]))
         self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
