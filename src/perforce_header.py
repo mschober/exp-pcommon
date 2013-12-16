@@ -29,6 +29,13 @@ class Document:
     def missing(self):
         return self.no_match
 
+    def has_flowerbox(self):
+        begins_with_slash_star_plus_any_number_of_stars = '^/\*(\*)+\n'
+        contains_any_number_of_lines = '(.*\n)+'
+        ends_with_any_number_of_stars_plus_star_slash = '(\*)+\*/$'
+        flower_pattern = begins_with_slash_star_plus_any_number_of_stars + contains_any_number_of_lines + ends_with_any_number_of_stars_plus_star_slash
+        return re.search(flower_pattern, self.text)
+
     def __replace_header(self, new_header, split_line=None, upper=False, **kwargs):
 
         if not split_line:

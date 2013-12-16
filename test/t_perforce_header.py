@@ -43,15 +43,11 @@ Change History:
     @istest
     def has_flower_box(self):
         doc = perforce_header.Document('path', self.p4_header + '\n\nline1\nline2\nline3')
-        begins_with_slash_star_plus_any_number_of_stars = '^/\*(\*)+\n'
-        contains_any_number_of_lines = '(.*\n)+'
-        ends_with_any_number_of_stars_plus_star_slash = '(\*)+\*/$'
-        flower_pattern = begins_with_slash_star_plus_any_number_of_stars + contains_any_number_of_lines + ends_with_any_number_of_stars_plus_star_slash
-
         matching_patterns = ['/**\n header line one \n**/', '/**********\n header line 1 \n header line 2 \n**************/']
         not_matching_patterns = ['', '*', '/* block comment \n line2 */']
-        print flower_pattern
         for txt in matching_patterns:
-            assert re.search(flower_pattern, txt), '(' + str(txt) + ')'
+            doc = perforce_header.Document('path', txt)
+            assert doc.has_flowerbox()
         for txt in not_matching_patterns:
-            assert not re.search(flower_pattern, txt), '(' + str(txt) + ')'
+            doc = perforce_header.Document('path', txt)
+            assert not doc.has_flowerbox()
