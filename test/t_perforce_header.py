@@ -19,13 +19,14 @@ Change History:
     ----------  ---------------      ------------------------------------
     {current_date}  Booking Engineering  Created
 
-******************************************************************************/'''
+******************************************************************************/
+'''
 
     @istest
     def replace_header(self):
         doc = perforce_header.Document('path', 'line\n1\nline2\nline3')
         header_args = {'file_name':'my_file.sql', 'current_date':'2013-12-10'}
-        doc.replace_header(self.p4_header, '1', **header_args)
+        doc.replace_header(self.p4_header, **header_args)
         has_file = False
         has_date = False
         for line in fileutil.blocks(str(doc)):
@@ -43,11 +44,11 @@ Change History:
     @istest
     def has_flower_box(self):
         doc = perforce_header.Document('path', self.p4_header + '\n\nline1\nline2\nline3')
-        matching_patterns = ['/**\n header line one \n**/', '/**********\n header line 1 \n header line 2 \n**************/']
+        matching_patterns = ['/**\n header line one \n**/\n', '/**********\n header line 1 \n header line 2 \n**************/\n']
         not_matching_patterns = ['', '*', '/* block comment \n line2 */']
         for txt in matching_patterns:
             doc = perforce_header.Document('path', txt)
-            assert doc.has_flowerbox()
+            assert doc.has_flowerbox(), 'matching ({txt})'.format(txt=txt)
         for txt in not_matching_patterns:
             doc = perforce_header.Document('path', txt)
-            assert not doc.has_flowerbox()
+            assert not doc.has_flowerbox(), 'not matching ({txt})'.format(txt=txt)
