@@ -3,10 +3,12 @@ import common.src.fileutil as fileutil
 import re
 
 class Document:
-    __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS = '^/\*(\*)+\n'
+    __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS = '^/\*?(\*)+\n'
     __CONTAINS_ANY_NUMBER_OF_LINES = '(.*\n)+'
-    __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH = '(\*)+\*/\n$'
+    __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH = '(\*)+\?*/\n'
     FLOWER_PATTERN = __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS + __CONTAINS_ANY_NUMBER_OF_LINES + __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH
+    FLOWER_PATTERN_REGEX = re.compile(FLOWER_PATTERN, re.DOTALL)
+
 
     def __init__(self, p4_path, text):
         self.path = p4_path
@@ -37,7 +39,13 @@ class Document:
         body_string = self.text
         self.text = fileutil.whole([header_string, 'set nocount on', body_string])
 
+    def remove_header(self):
+        return re.sub(self.FLOWER_PATTERN_REGEX, '', self.text)
+
     def __replace_header(self, new_header, **kwargs):
+        if self.has_flowerbox():
+            self.remove_header()
+
         split_line = '***/\n'
         blocks = fileutil.blocks(self.text, split_line)
         header_string = new_header.format(**kwargs)

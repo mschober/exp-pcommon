@@ -43,7 +43,6 @@ Change History:
 
     @istest
     def has_flower_box(self):
-        doc = perforce_header.Document('path', self.p4_header + '\n\nline1\nline2\nline3')
         matching_patterns = ['/**\n header line one \n**/\n', '/**********\n header line 1 \n header line 2 \n**************/\n']
         not_matching_patterns = ['', '*', '/* block comment \n line2 */']
         for txt in matching_patterns:
@@ -52,3 +51,20 @@ Change History:
         for txt in not_matching_patterns:
             doc = perforce_header.Document('path', txt)
             assert not doc.has_flowerbox(), 'not matching ({txt})'.format(txt=txt)
+
+    @istest
+    def flower_box_wrapped_in_block_comment(self):
+        matching_patterns = ['/*\n**\n header line one \n**\n*/\n', '/*\n*********\n header line 1 \n header line 2 \n*************\n*/\n']
+        for txt in matching_patterns:
+            doc = perforce_header.Document('path', txt)
+            assert doc.has_flowerbox(), 'matching ({txt})'.format(txt=txt)
+
+    @istest
+    def remove_flower_box(self):
+        simple = perforce_header.Document('path', self.p4_header + 'line1\nline2\n')
+        wrapped_in_block_comment = perforce_header.Document('path', '/*\n*****\ncomment line1\ncomment line2\n*****\n*/\nline1\nline2\n')
+        removals = [simple, wrapped_in_block_comment]
+        for to_remove in removals:
+            self.assertEquals(to_remove.remove_header(), 'line1\nline2\n')
+
+
