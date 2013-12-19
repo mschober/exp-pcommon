@@ -97,7 +97,7 @@ go
         self.assertEquals(['line1', 'line2', 'line3'], fileutil.blocks(str(doc)))
 
     @istest
-    def has_flower_box(self):
+    def has_flowerbox(self):
         matching_patterns = ['/**\n header line one \n**/\n', '/**********\n header line 1 \n header line 2 \n**************/\n']
         not_matching_patterns = ['', '*', '/* block comment \n line2 */']
         for txt in matching_patterns:
@@ -108,14 +108,14 @@ go
             assert not doc.has_flowerbox(), 'not matching ({txt})'.format(txt=txt)
 
     @istest
-    def flower_box_wrapped_in_block_comment(self):
+    def flowerbox_wrapped_in_block_comment(self):
         matching_patterns = ['/*\n**\n header line one \n**\n*/\n', '/*\n*********\n header line 1 \n header line 2 \n*************\n*/\n']
         for txt in matching_patterns:
             doc = perforce_header.Document('path', txt)
             assert doc.has_flowerbox(), 'matching ({txt})'.format(txt=txt)
 
     @istest
-    def remove_flower_box(self):
+    def remove_flowerbox(self):
         simple = perforce_header.Document('path', self.p4_header + 'line1\nline2\n')
         wrapped_in_block_comment = perforce_header.Document('path', '/*\n*****\ncomment line1\ncomment line2\n*****\n*/\nline1\nline2\n')
         removals = [simple, wrapped_in_block_comment]
@@ -123,11 +123,16 @@ go
             self.assertEquals(str(to_remove.remove_header()), 'line1\nline2\n')
 
     @istest
-    def remove_flower_box_with_text_above(self):
+    def remove_flowerbox_with_text_above(self):
         starts_with_space = perforce_header.Document('path', ' \n' + self.p4_header + 'line1\nline2\n')
         self.assertEquals(str(starts_with_space.remove_header()), ' \nline1\nline2\n')
 
     @istest
-    def remove_flower_box_case_study(self):
+    def remove_flowerbox_case_study(self):
         case_study = perforce_header.Document('path', self.p4_header_case_study + self.p4_body_case_study)
         self.assertEquals(self.p4_body_case_study, str(case_study.remove_header()))
+
+    @istest
+    def remove_flowerbox_does_not_delete_to_end_of_next_comment_block(self):
+        has_block_comment = perforce_header.Document('path', self.p4_header_case_study + self.p4_body_case_study + '/*\nline1\nline2\n*/\nline3\nline4\n')
+        self.assertEquals(self.p4_body_case_study + '/*\nline1\nline2\n*/\nline3\nline4\n', str(has_block_comment.remove_header()))
