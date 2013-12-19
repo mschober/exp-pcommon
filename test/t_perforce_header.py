@@ -67,4 +67,8 @@ Change History:
         for to_remove in removals:
             self.assertEquals(to_remove.remove_header(), 'line1\nline2\n')
 
+    @istest
+    def remove_flower_box_with_text_above(self):
+        starts_with_space = perforce_header.Document('path', ' \n' + self.p4_header + 'line1\nline2\n')
+        self.assertEquals(starts_with_space.remove_header(), ' \nline1\nline2\n')
 

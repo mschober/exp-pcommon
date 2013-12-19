@@ -3,11 +3,11 @@ import common.src.fileutil as fileutil
 import re
 
 class Document:
-    __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS = '^/\*?(\*)+\n'
+    __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS = '/\*?(\*)+\n'
     __CONTAINS_ANY_NUMBER_OF_LINES = '(.*\n)+'
     __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH = '(\*)+\?*/\n'
     __FLOWER_PATTERN = __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS + __CONTAINS_ANY_NUMBER_OF_LINES + __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH
-    FLOWER_PATTERN_REGEX = re.compile(__FLOWER_PATTERN, re.DOTALL)
+    FLOWER_PATTERN_REGEX = re.compile(__FLOWER_PATTERN)
 
 
     def __init__(self, p4_path, text):
@@ -54,6 +54,7 @@ class Document:
 
     def replace_header(self, new_header, **kwargs):
         if self.has_flowerbox():
+            print 'removing for {txt}'.format(txt=self.text)
             self.remove_header()
             #self.__replace_header(new_header, **kwargs)
         self.__insert_header(new_header, **kwargs)
