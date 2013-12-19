@@ -6,8 +6,8 @@ class Document:
     __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS = '^/\*?(\*)+\n'
     __CONTAINS_ANY_NUMBER_OF_LINES = '(.*\n)+'
     __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH = '(\*)+\?*/\n'
-    FLOWER_PATTERN = __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS + __CONTAINS_ANY_NUMBER_OF_LINES + __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH
-    FLOWER_PATTERN_REGEX = re.compile(FLOWER_PATTERN, re.DOTALL)
+    __FLOWER_PATTERN = __BEGINS_WITH_SLASH_STAR_PLUS_ANY_NUMBER_OF_STARS + __CONTAINS_ANY_NUMBER_OF_LINES + __ENDS_WITH_ANY_NUMBER_OF_STARS_PLUS_STAR_SLASH
+    FLOWER_PATTERN_REGEX = re.compile(__FLOWER_PATTERN, re.DOTALL)
 
 
     def __init__(self, p4_path, text):
@@ -32,7 +32,7 @@ class Document:
         self.path = self.path.replace('/' + fname, '')
 
     def has_flowerbox(self):
-        return re.search(self.FLOWER_PATTERN, self.text)
+        return self.FLOWER_PATTERN_REGEX.match(self.text)
 
     def __insert_header(self, new_header, **kwargs):
         header_string = new_header.format(**kwargs)
@@ -54,6 +54,6 @@ class Document:
 
     def replace_header(self, new_header, **kwargs):
         if self.has_flowerbox():
-            self.__replace_header(new_header, **kwargs)
-        else:
-            self.__insert_header(new_header, **kwargs)
+            self.remove_header()
+            #self.__replace_header(new_header, **kwargs)
+        self.__insert_header(new_header, **kwargs)
