@@ -38,23 +38,13 @@ class Document:
         header_string = new_header.format(**kwargs)
         body_string = self.text
         self.text = fileutil.whole([header_string, 'set nocount on', body_string])
+        return self
 
     def remove_header(self):
-        return re.sub(self.FLOWER_PATTERN_REGEX, '', self.text)
-
-    def __replace_header(self, new_header, **kwargs):
-        if self.has_flowerbox():
-            self.remove_header()
-
-        split_line = '***/\n'
-        blocks = fileutil.blocks(self.text, split_line)
-        header_string = new_header.format(**kwargs)
-        body_string = fileutil.whole(blocks[1:])
-        self.text = fileutil.whole([header_string, 'set nocount on', body_string])
+        self.text = re.sub(self.FLOWER_PATTERN_REGEX, '', self.text)
+        return self
 
     def replace_header(self, new_header, **kwargs):
-        if self.has_flowerbox():
-            print 'removing for {txt}'.format(txt=self.text)
-            self.remove_header()
-            #self.__replace_header(new_header, **kwargs)
+        self.remove_header()
         self.__insert_header(new_header, **kwargs)
+        return self

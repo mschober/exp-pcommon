@@ -22,6 +22,61 @@ Change History:
 ******************************************************************************/
 '''
 
+    p4_header_case_study ='''/******************************************************************************
+Copyright 2006 Expedia, Inc
+All rights reserved.
+
+Description:
+   Create Trigger statements for LoyaltyPointFileImportErrorCode.
+
+$Author: toddnie $
+$Change: 308261 $
+$Date: 2013/12/16 $
+$File: //depot/EDW/SQLServer/LZ/LoyaltyPoints/dev/db/tbl/trg/LoyaltyPointFileImportErrorCode.sql $
+$Revision: #3 $
+
+History:
+--------
+20060616 v-hbarraclough   Created.
+******************************************************************************/
+'''
+    p4_body_case_study = '''
+
+if (objectproperty(object_id('dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate'), 'IsTrigger') = 1)
+begin
+    exec sp_RaiseMsg @pProcID = @@PROCID, @pRaiseMessage = 'Dropping trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate'
+    drop trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate
+end
+go
+
+if object_id('dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate') is NULL
+begin
+    exec sp_RaiseMsg @pProcID = @@PROCID, @pRaiseMessage = 'Creating trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate (placeholder)'
+    execute('create trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate on dbo.LoyaltyPointFileImportErrorCode after insert as return')
+end
+go
+
+exec sp_RaiseMsg @pProcID = @@PROCID, @pRaiseMessage = 'Altering trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate'
+go
+
+alter trigger dbo.LoyaltyPointFileImportErrorCodeAftInsUpdUpdateDate
+on dbo.LoyaltyPointFileImportErrorCode after insert, update not for replication
+as
+begin
+    set nocount on
+    -- Set the UpdateDate to Current_Timestamp for all modified rows
+    update dbo.LoyaltyPointFileImportErrorCode
+    set UpdateDate = Current_Timestamp
+    from dbo.LoyaltyPointFileImportErrorCode as t1
+    join inserted as i
+      on t1.LoyaltyPointFileImportErrorCodeID = i.LoyaltyPointFileImportErrorCodeID
+    return
+end
+go
+
+    
+'''
+
     @istest
     def replace_header(self):
         doc = perforce_header.Document('path', 'line\n1\nline2\nline3')
@@ -65,10 +120,14 @@ Change History:
         wrapped_in_block_comment = perforce_header.Document('path', '/*\n*****\ncomment line1\ncomment line2\n*****\n*/\nline1\nline2\n')
         removals = [simple, wrapped_in_block_comment]
         for to_remove in removals:
-            self.assertEquals(to_remove.remove_header(), 'line1\nline2\n')
+            self.assertEquals(str(to_remove.remove_header()), 'line1\nline2\n')
 
     @istest
     def remove_flower_box_with_text_above(self):
         starts_with_space = perforce_header.Document('path', ' \n' + self.p4_header + 'line1\nline2\n')
-        self.assertEquals(starts_with_space.remove_header(), ' \nline1\nline2\n')
+        self.assertEquals(str(starts_with_space.remove_header()), ' \nline1\nline2\n')
 
+    @istest
+    def remove_flower_box_case_study(self):
+        case_study = perforce_header.Document('path', self.p4_header_case_study + self.p4_body_case_study)
+        self.assertEquals(self.p4_body_case_study, str(case_study.remove_header()))
