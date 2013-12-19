@@ -24,9 +24,11 @@ Change History:
 
     p4_body = 'line1\nline2\n'
 
+    THREE_SPACES = '   '
+
     p4_header_case_study ='''
-/*   
-*********************************************************************   
+/*{three_spaces}
+********************************************************************{three_spaces}
 Copyright (C) 2010 Expedia, Inc. 
 All rights reserved. 
 
@@ -40,8 +42,8 @@ Change History:
     ----------  --------------- ------------------------------------ 
     20100104    v-smvasilik     Created 
 
-*********************************************************************   
-*/   '''
+*********************************************************************{three_spaces}
+*/{three_spaces}'''.format(three_spaces=THREE_SPACES)
     p4_body_case_study = '''
 
 go 
