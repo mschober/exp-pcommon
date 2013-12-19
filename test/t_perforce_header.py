@@ -108,4 +108,4 @@ GO
     @istest
     def remove_flowerbox_does_not_delete_to_end_of_next_comment_block(self):
         has_block_comment = perforce_header.Document('path', self.p4_header_case_study + self.p4_body_case_study + '/*\nline1\nline2\n*/\nline3\nline4\n')
-        #self.assertEquals(self.p4_body_case_study + '/*\nline1\nline2\n*/\nline3\nline4\n', str(has_block_comment.remove_header()))
+        self.assertEquals(self.p4_body_case_study + '/*\nline1\nline2\n*/\nline3\nline4\n', str(has_block_comment.remove_header()))
