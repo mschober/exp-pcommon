@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import common.src.fileutil as fileutil
+import fileutil
 import re
 
 class Document:

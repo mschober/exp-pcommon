@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import subprocess
 import fileutil
-import common.src.utilities as utilities
+import utilities
 import re
 
 class p4:
@@ -29,6 +29,9 @@ class p4:
         self.files_txt = self.__execute_p4_command(cmd)
         return list(self.files_txt)
 
+    def get(self, filename):
+        return self.text(filename)
+
 class P4Tools:
 
     def __init__(self, p4_path):
@@ -39,9 +42,7 @@ class P4Tools:
         return [ change.split('#')[0] for change in changes ]
 
     def __execute_p4_command(self, cmd):
-        results = subprocess.check_output(cmd.split()).split('\n')
-        results.pop()
-        return results
+        return utilities.execute_command(cmd)
 
     def traverse_files(self, sub_path=''):
         changes = self.p4.files(sub_path)
@@ -67,3 +68,7 @@ class P4Tools:
         keys = '_'.join(fileutil.path_heads(sub_paths))
         path_file = dict(zip(files, keys)) #this looks backwards because it is, the files are now the keys and the keys are the values
         return path_file
+
+    def get(self, filename):
+        return self.p4.get(filename)
+

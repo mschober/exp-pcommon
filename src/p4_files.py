@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import pprint
-import utilities as utilities
-import fileutil as fileutil
+import utilities
+import fileutil
 from p4tools import P4Tools
 
 #maybe classes would help clean this up
