@@ -2,8 +2,7 @@
 
 import unittest
 from nose.tools import istest
-import src.perforce_header as perforce_header
-import src.fileutil as fileutil
+from common import perforce_header, fileutil
 import re
 
 class TestDocument(unittest.TestCase):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from nose.tools import istest
-import src.p4tools as p4tools
+from common import p4tools
 import unittest
 
 class Testp4(unittest.TestCase):

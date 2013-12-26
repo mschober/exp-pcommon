@@ -2,7 +2,7 @@
 
 from nose.tools import istest
 import unittest
-import common.src.fileutil as fileutil
+from common import fileutil
 
 class TestFileutil(unittest.TestCase):
 
