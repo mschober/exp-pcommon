@@ -2,7 +2,7 @@
 import subprocess
 import fileutil
 import utilities
-import re
+import re, os
 
 class p4:
     def __init__(self, path):
@@ -29,8 +29,10 @@ class p4:
         self.files_txt = self.__execute_p4_command(cmd)
         return list(self.files_txt)
 
-    def get(self, filename):
-        return self.text(filename)
+    def get_it(self, filename):
+        cmd = 'p4 print %s' % os.path.join(self.path, filename)
+        file_txt = self.__execute_p4_command(cmd)
+        return file_txt
 
 class P4Tools:
 
@@ -69,6 +71,6 @@ class P4Tools:
         path_file = dict(zip(files, keys)) #this looks backwards because it is, the files are now the keys and the keys are the values
         return path_file
 
-    def get(self, filename):
-        return self.p4.get(filename)
+    def get_it(self, filename):
+        return self.p4.get_it(filename)
 
