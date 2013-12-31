@@ -5,6 +5,8 @@ import utilities
 import re, os
 
 class p4:
+    #http://www.perforce.com/perforce/doc.current/manuals/p4guide/08_scripting.html
+    #Common flags used in scripting and reporting: -G Causes all output (and batch input for form commands with -i) to be formatted as marshaled Python dictionary objects.
     def __init__(self, path):
         self.path = path
         self.dirs_list = []
@@ -34,6 +36,16 @@ class p4:
         file_txt = self.__execute_p4_command(cmd)
         return file_txt
 
+    def edit(self, filename):
+        cmd = 'p4 edit %s' % os.path.join(self.path, filename)
+        self.__execute_p4_command(cmd)
+
+    def where(self, filename):
+        cmd = 'p4 where %s' % os.path.join(self.path, filename)
+        location_mapping = self.__execute_p4_command(cmd)
+        local_path = location_mapping[0].split()[2]
+        return local_path
+
 class P4Tools:
 
     def __init__(self, p4_path):
@@ -41,6 +53,9 @@ class P4Tools:
         self.p4 = p4(p4_path)
 
     def __remove_change_information(self, changes):
+        #http://www.perforce.com/perforce/doc.current/manuals/p4guide/08_scripting.html
+        #Without the banner
+        #p4 print -q filespec
         return [ change.split('#')[0] for change in changes ]
 
     def __execute_p4_command(self, cmd):
@@ -74,3 +89,12 @@ class P4Tools:
     def get_it(self, filename):
         return self.p4.get_it(filename)
 
+    def edit(self, filename):
+        self.p4.edit(filename)
+
+    def save(self, filename, file_text):
+        file_string = '\n'.join(file_text)
+        local_path = self.p4.where(os.path.join(self.p4_path, filename))
+        with open(local_path, 'w') as f:
+            f.write(file_string)
+            f.close()

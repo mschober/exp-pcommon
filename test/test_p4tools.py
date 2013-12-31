@@ -30,3 +30,11 @@ class Testp4(unittest.TestCase):
         path = '//depot/dmo/BookingImp/BookingImp/DEV/db/tbl'
         p4 = p4tools.p4(path)
         self.assertEquals(path.split('/') + ['index'], p4.files('index')[0].split('/')[0:-1])
+
+    @istest
+    def edit(self):
+        pass
+
+    @istest
+    def save(self):
+        pass
