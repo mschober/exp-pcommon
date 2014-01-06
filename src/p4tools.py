@@ -32,7 +32,7 @@ class p4:
         return list(self.files_txt)
 
     def get_it(self, filename):
-        cmd = 'p4 print %s' % os.path.join(self.path, filename)
+        cmd = 'p4 print -q %s' % os.path.join(self.path, filename)
         file_txt = self.__execute_p4_command(cmd)
         return file_txt
 

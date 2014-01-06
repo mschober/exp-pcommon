@@ -18,3 +18,6 @@ def execute_command(cmd):
     results = output.split('\n')
     results.pop()
     return results
+
+def get_user():
+    return execute_command('whoami')[0]
