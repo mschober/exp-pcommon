@@ -5,7 +5,7 @@ from nose.tools import istest
 from common import perforce_header, fileutil
 import re
 
-class TestDocument(unittest.TestCase):
+class DocumentTest(unittest.TestCase):
 
     p4_header = '''/******************************************************************************
 Copyright 2013 Expedia, Inc.

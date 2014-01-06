@@ -1,5 +1,8 @@
 *.pyc
 .exp*
+.py*
+*.egg-info
+*.egg
 common/*
 remove_indexes/*
 example/*
