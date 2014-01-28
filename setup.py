@@ -7,7 +7,7 @@ setup(
     name='common',
     version=version,
     description="common package",
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
     setup_requires=['nose>=1.0'],
