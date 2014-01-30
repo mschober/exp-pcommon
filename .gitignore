@@ -7,3 +7,4 @@ common/*
 remove_indexes/*
 example/*
 merge_mssql_ddls/*
+build
