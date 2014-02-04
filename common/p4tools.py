@@ -30,10 +30,9 @@ class p4:
         self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
-    def text(self, sub_path=''):
-        cmd = 'p4 print %s' % ('/'.join([ path for path in [self.path, sub_path, '*'] if path ]))
-        self.files_txt = self.__execute_p4_command(cmd)
-        return list(self.files_txt)
+    def text(self):
+        cmd = 'p4 print -q %s' % self.path
+        return self.__execute_p4_command(cmd)
 
     def get_it(self, filename):
         cmd = 'p4 print -q %s' % os.path.join(self.path, filename)
