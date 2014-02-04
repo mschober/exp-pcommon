@@ -21,8 +21,12 @@ class p4:
         self.dirs_list = self.__execute_p4_command(cmd)
         return list(self.dirs_list)
 
-    def files(self, sub_path=''):
-        cmd = "p4 files %s" % ('/'.join([ path for path in [self.path, sub_path, '...#head'] if path ]))
+    def files(self, sub_path='', limit=None):
+        files = ('/'.join([ path for path in [self.path, sub_path, '...#head'] if path ]))
+        if limit:
+            cmd = "p4 files -m {max} {files}".format(max=limit, files=files)
+        else:
+            cmd = "p4 files {files}".format(files=files)
         self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
