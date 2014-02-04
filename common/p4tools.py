@@ -2,12 +2,13 @@
 import fileutil
 import utilities
 import re, os
+import p4_connector
 
 class P4Tools:
 
     def __init__(self, p4_path):
         self.p4_path = p4_path
-        self.p4 = p4(p4_path)
+        self.p4 = p4_connector.P4(p4_path)
 
     def __remove_change_information(self, changes):
         #http://www.perforce.com/perforce/doc.current/manuals/p4guide/08_scripting.html
