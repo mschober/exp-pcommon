@@ -10,7 +10,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    setup_requires=['nose>=1.0'],
+    setup_requires=['setuptools_git'],
+    test_requires=['nose'],
     test_suite="nose.collector",
     tests_require="nose",
 )
