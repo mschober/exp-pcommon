@@ -65,8 +65,8 @@ class P4Tools:
     def __execute_p4_command(self, cmd):
         return utilities.execute_command(cmd)
 
-    def traverse_files(self, sub_path=''):
-        changes = self.p4.files(sub_path)
+    def traverse_files(self, sub_path='', limit=None):
+        changes = self.p4.files(sub_path, limit=limit)
         paths = self.__remove_change_information(changes)
         return paths
 
