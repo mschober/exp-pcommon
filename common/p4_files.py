@@ -62,3 +62,6 @@ def find_matching_files(lowercase=False):
         pprint.pprint(compare(path, lower=lowercase))
         #results.append(compare(path))
     #pprint.pprint(results)
+
+def depot_path_to_key(depot_path):
+    return depot_path.replace('/', '_')
