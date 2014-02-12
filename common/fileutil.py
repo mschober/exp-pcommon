@@ -3,10 +3,10 @@ import os
 import collections
 
 def path_head(path):
-    return os.path.split(path)[0]
+    return os.path.dirname(path)
 
 def path_tail(path):
-    return os.path.split(path)[1]
+    return os.path.basename(path)
 
 def path_heads(paths):
     return map(path_head, paths)

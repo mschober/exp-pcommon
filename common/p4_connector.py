@@ -27,8 +27,8 @@ class P4:
         self.files_list = self.__execute_p4_command(cmd)
         return list(self.files_list)
 
-    def text(self):
-        cmd = 'p4 print -q %s' % self.path
+    def text(self, file_path):
+        cmd = 'p4 print -q %s' % self.path + "/" + file_path
         return self.__execute_p4_command(cmd)
 
     def get_it(self, filename):

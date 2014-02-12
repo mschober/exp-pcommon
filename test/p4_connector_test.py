@@ -29,3 +29,5 @@ class TestP4Connector(unittest.TestCase):
         p4 = p4_connector.P4(path)
         assert len(p4.files(limit=5)) == 5
 
+    def test_get_file_with_space_in_path(self):
+        pass
