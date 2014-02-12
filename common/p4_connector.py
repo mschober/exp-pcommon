@@ -29,7 +29,7 @@ class P4:
 
     def text(self, file_path):
         cmd = 'p4 print -q %s' % self.path + "/" + file_path
-        return self.__execute_p4_command(cmd)
+        return "".join(self.__execute_p4_command(cmd))
 
     def get_it(self, filename):
         cmd = 'p4 print -q %s' % os.path.join(self.path, filename)
